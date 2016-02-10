@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Todo List</string>
+
+    <string name="debugger">Debugger</string>
+    <string name="task_add">Nouvelle tâche</string>
+
+    <string name="task_desc">Description de la tâche</string>
+    <string name="add">Ajouter</string>
+    <string name="add_success">Tâche ajoutée</string>
+
+    <string name="db_count">Nombre d\'élements :</string>
+
+    <string name="entry_error">Veuillez entrer une valeur valide !</string>
+</resources>
