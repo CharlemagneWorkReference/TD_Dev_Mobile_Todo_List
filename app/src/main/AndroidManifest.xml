@@ -20,7 +20,7 @@
             android:label="@string/task_add"/>
 
         <activity android:name=".Debugger"
-            android:label="@string/debugger"/>
+            android:theme="@style/Theme.AppCompat.Light"/>
     </application>
 
 </manifest>

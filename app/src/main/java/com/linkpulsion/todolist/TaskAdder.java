@@ -38,6 +38,7 @@ public class TaskAdder extends AppCompatActivity {
                     bdd.getWritableDatabase().execSQL("INSERT INTO " + bdd.TABLE_NAME +
                     " (" + bdd.KEY_DESC + ") VALUES ('" + task.getText() + "');");
                     Toast.makeText(TaskAdder.this,getString(R.string.add_success),Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });
