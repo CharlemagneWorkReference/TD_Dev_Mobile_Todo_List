@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +32,7 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Debugger extends Activity implements OnItemClickListener {
+public class Debugger extends AppCompatActivity implements OnItemClickListener {
 
     //a static class to save cursor,table values etc which is used by functions to share data in the program.
     static class indexInfo
