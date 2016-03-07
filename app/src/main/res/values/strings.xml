@@ -9,6 +9,7 @@
     <string name="debugger">Debugger</string>
     <string name="task_add">Nouvelle tâche</string>
     <string name="tri_item">Trier</string>
+    <string name="void_item">Vider la liste</string>
 
     <string name="task_desc">Description de la tâche</string>
     <string name="add">Ajouter</string>

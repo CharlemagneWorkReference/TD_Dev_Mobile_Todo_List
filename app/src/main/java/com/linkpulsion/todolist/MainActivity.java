@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
         refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                taskList = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,getTasks());
-                todoList.setAdapter(taskList);
-                refresher.setRefreshing(false);
+                refreshList();
             }
         });
 
@@ -65,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.task_add_item){
             //on ajoute un tache
             startActivity(new Intent(this,TaskAdder.class));
+        }
+        if(id == R.id.void_item){
+            this.voidList();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -102,5 +103,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    private void voidList(){
+        bdd.getWritableDatabase().execSQL("DELETE FROM ToDo");
+        refreshList();
+    }
+
+    private void refreshList(){
+        taskList = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,getTasks());
+        todoList.setAdapter(taskList);
+        refresher.setRefreshing(false);
     }
 }
