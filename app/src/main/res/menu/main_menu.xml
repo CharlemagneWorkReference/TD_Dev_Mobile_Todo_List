@@ -8,8 +8,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/debug_item"
         android:title="@string/debugger"/>
-    <item android:id="@+id/task_add_item"
-        android:title="@string/task_add"/>
     <item android:id="@+id/tir_item"
         android:title="@string/tri_item"/>
     <item android:id="@+id/void_item"

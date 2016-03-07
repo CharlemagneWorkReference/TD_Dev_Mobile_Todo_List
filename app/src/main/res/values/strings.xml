@@ -18,4 +18,10 @@
     <string name="db_count">Nombre d\'élements :</string>
 
     <string name="entry_error">Veuillez entrer une valeur valide !</string>
+
+    <string name="delete_task">Supprimer la tâche ?</string>
+    <array name="menu">
+        <item>Oui</item>
+        <item>Annuler</item>
+    </array>
 </resources>
