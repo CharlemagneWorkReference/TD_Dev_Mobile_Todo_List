@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016 - Cyprien Aubry
+ * Tous Droits Reservés
+ */
+
 package com.linkpulsion.todolist;
 
 import android.content.Intent;

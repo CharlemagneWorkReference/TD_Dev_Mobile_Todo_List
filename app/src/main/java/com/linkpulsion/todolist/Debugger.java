@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2016 - Cyprien Aubry
+ * Tous Droits Reservés
+ */
+
 //add your package name here example: package com.example.dbm;
 package com.linkpulsion.todolist;
 
