@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout refresher;
     private ArrayAdapter<String> taskList;
     private FloatingActionButton fabAdd;
+    private boolean tri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,16 +85,24 @@ public class MainActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //on instancie le constructeur de boîtes de dialogue
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                //on récupère l'inflater de layout da l'activité courante
                 LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                //on inflate le layout personnalisé
                 final View dialogView = inflater.inflate(R.layout.add_dialog, null);
+                //on l'utilise pour personnaliser la boîte de dialogue
                 dialogBuilder.setView(dialogView);
 
+                //on instancie les elements de la boîte de dialogue
                 final EditText edt = (EditText) dialogView.findViewById(R.id.task);
                 final TextInputLayout edtLay = (TextInputLayout)dialogView.findViewById(R.id.adder_lay);
 
+                //on choisit un titre
                 dialogBuilder.setTitle(R.string.task_add);
-                dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+
+                //un bouton de réponse positive
+                dialogBuilder.setNeutralButton(R.string.add, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if(edt.getText().toString().equals("")){
                             edtLay.setError(getString(R.string.entry_error));
@@ -106,15 +115,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+                //un bouton de réponse négative
                 dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //NOTHING
+                        //on ne fait rien, juste dismiss le dialogue
                     }
                 });
+
+                //on crée la boite de dialogue
                 AlertDialog b = dialogBuilder.create();
+
+                //on l'affiche
                 b.show();
             }
         });
+
+        //les tâche ne sont pas triées de base
+        tri = false;
     }
 
     @Override
