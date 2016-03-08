@@ -15,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ *Activité principale de l'application, c'est celle
+ * qui est lancée au démarrage de l'app
+ * @author Cyprien
+ * @version 1.3
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static BDD bdd;
@@ -42,11 +49,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //on crée une instance de la BDD
         bdd = new BDD(this);
 
+        //on instancie la liste
         todoList = (ListView)findViewById(R.id.listView);
 
+        //on instancie le refresher
         refresher = (SwipeRefreshLayout)findViewById(R.id.refresher);
+
+        //on crée le listener du refresher, il est chargé de rafraîchir
+        //la liste
         refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -54,11 +67,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //on instancie l'adapter de la liste en lui donnant une taille
+        //prédéfinie par Android
         taskList = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,getTasks());
+
+        //on l'associe à la liste
         todoList.setAdapter(taskList);
+
+        //et on l'enregistre pour pourvoir utiliser le menu contextuel
         registerForContextMenu(todoList);
 
+        //on instancie le FAB
         fabAdd = (FloatingActionButton)findViewById(R.id.fab_add);
+
+        //et on crée son listener qui est chargé d'ajouter unet tâche
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,11 +132,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this,Debugger.class));
         }
         if(id == R.id.void_item){
+            //on vide la liste
             this.voidList();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Cette méthode compte le nombre de tâches présentes
+     * dans la base de données
+     * @return int
+     */
     private int getTaskCount() {
         String countQuery = "SELECT  * FROM " + bdd.TABLE_NAME;
         SQLiteDatabase db = bdd.getReadableDatabase();
@@ -124,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
         return cnt;
     }
 
+    /**
+     * Cette méthode retourne la liste de tâches présentes
+     * dans la base de données
+     * @return int
+     */
     private ArrayList<String> getTasks(){
         ArrayList<String> res = new ArrayList<>();
         int count = getTaskCount();
@@ -146,25 +179,45 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        //comme ça on peut reprendre là où on s'est arrêté
         super.onResume();
-
     }
 
+    /**
+     * Cette méthode est chargé de vider la table des
+     * tâches dans la base de données
+     */
     private void voidList(){
+        //on vide
         bdd.getWritableDatabase().execSQL("DELETE FROM ToDo");
         bdd.getWritableDatabase().execSQL("VACUUM");
+        //on remet le compteur d'auto incrément à 0
         bdd.getWritableDatabase().execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='ToDo';");
+        //on actualise la liste
         refreshList();
     }
 
+    /**
+     * Cette méthode sert à rafraîchir la liste des tâches
+     */
     private void refreshList(){
+        //on met à jour l'adapter
         taskList = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,getTasks());
+        //on le réassigne à la liste de tâches
         todoList.setAdapter(taskList);
+        //on stoppe l'animation de rafraîchissment
         refresher.setRefreshing(false);
     }
 
+    /**
+     * Cette méthode sert à supprimer un item en particulier
+     * dans la liste
+     * @param id int
+     */
     private void deleteItem(int id){
+        //on le supprime de la base
         bdd.getWritableDatabase().execSQL("DELETE FROM ToDO WHERE id=" + id);
+        //et on met à jour
         refreshList();
     }
 
@@ -183,20 +236,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        //on récupère l'adapter pour gérer la liste d'options du menu
+        AdapterView.AdapterContextMenuInfo options = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         int menuItemIndex = item.getItemId();
         String[] menuItems = getResources().getStringArray(R.array.menu);
         String menuItemName = menuItems[menuItemIndex];
-        String listItemName = String.valueOf(info.position);
+        String listItemName = String.valueOf(options.position);
 
         if(menuItemIndex == 0){
-            deleteItem(info.position + 1);
-        }else{
-            //NOTHING
+            //si on choisi l'option supprimer
+            deleteItem(options.position + 1);
         }
+
         bdd.getWritableDatabase().execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='ToDo';");
 
-        Toast.makeText(this,String.format("Selected %s for item %s", menuItemName, listItemName),Toast.LENGTH_LONG).show();
+        Log.d("CONTEXTMENU","Opetion selectionnée : " + menuItemName + " pour l'item " + listItemName);
         return true;
     }
 }

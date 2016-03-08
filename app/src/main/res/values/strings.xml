@@ -19,9 +19,9 @@
 
     <string name="entry_error">Veuillez entrer une valeur valide !</string>
 
-    <string name="delete_task">Supprimer la tâche ?</string>
+    <string name="delete_task">Supprimer la tâche N°</string>
     <array name="menu">
         <item>Oui</item>
-        <item>Annuler</item>
+        <item>Non !</item>
     </array>
 </resources>

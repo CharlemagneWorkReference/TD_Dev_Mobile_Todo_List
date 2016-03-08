@@ -16,7 +16,9 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by cyprien on 09/02/16.
+ * Classe de gestion de la base de données
+ * @author Cyprien
+ * @version 1.2
  */
 public class BDD extends SQLiteOpenHelper {
 
@@ -28,6 +30,10 @@ public class BDD extends SQLiteOpenHelper {
     private final static String CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
             " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DESC + " TEXT);";
 
+    /**
+     * Constructeur
+     * @param context Context - Contexte de lancement
+     */
     public BDD(Context context){
         super(context,DB_NAME,null,VERSION);
     }
@@ -42,6 +48,11 @@ public class BDD extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Méthode nécessaire au bon fonctionnement du debugger SQL
+     * @param Query String
+     * @return ArrayList<Cursor>
+     */
     public ArrayList<Cursor> getData(String Query){
         //get writable database
         SQLiteDatabase sqlDB = this.getWritableDatabase();

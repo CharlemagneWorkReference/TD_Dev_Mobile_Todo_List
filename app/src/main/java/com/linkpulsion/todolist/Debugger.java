@@ -37,6 +37,9 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activité de debug SQL
+ */
 public class Debugger extends AppCompatActivity implements OnItemClickListener {
 
     //a static class to save cursor,table values etc which is used by functions to share data in the program.
