@@ -216,17 +216,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void deleteItem(int id){
         //on le supprime de la base
-        bdd.getWritableDatabase().execSQL("DELETE FROM ToDO WHERE id=" + id);
+        bdd.getWritableDatabase().execSQL("DELETE FROM ToDo WHERE id=" + id);
         //et on met à jour
         refreshList();
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId()==R.id.listView) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(getString(R.string.delete_task) + info.toString());
+            AdapterView.AdapterContextMenuInfo options = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(getString(R.string.delete_task) + (((AdapterView.AdapterContextMenuInfo) menuInfo).id + 1) + " ?");
             String[] menuItems = getResources().getStringArray(R.array.menu);
             for (int i = 0; i<menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
