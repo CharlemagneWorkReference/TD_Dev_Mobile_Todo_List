@@ -5,6 +5,7 @@
 
 <resources>
     <string name="app_name">Todo List</string>
+    <string name="credits">Par Cyprien Aubry &amp; Sofiane Gerhardt - AI1</string>
 
     <string name="debugger">Debugger</string>
     <string name="task_add">Nouvelle tâche</string>
@@ -19,9 +20,15 @@
 
     <string name="entry_error">Veuillez entrer une valeur valide !</string>
 
-    <string name="delete_task">Supprimer la tâche N°</string>
+    <string name="delete_task">Actions sur la tâche N°</string>
     <array name="menu">
-        <item>Oui</item>
-        <item>Non !</item>
+        <item>Supprimer</item>
+        <item>Modifier</item>
+        <item>Annuler</item>
     </array>
+    <string name="delete_success">Tâche supprimée !</string>
+
+    <string name="edit_item">Modifier la tâche N°</string>
+    <string name="edit">Modifier</string>
+    <string name="edit_success">Tâche modifiée !</string>
 </resources>

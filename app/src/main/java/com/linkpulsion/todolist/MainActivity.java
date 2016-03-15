@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> taskList;
     private FloatingActionButton fabAdd;
     private boolean tri;
+    private CoordinatorLayout mainLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         //on crée une instance de la BDD
         bdd = new BDD(this);
+
+        //on instancie le coordinator layout
+        mainLay = (CoordinatorLayout)findViewById(R.id.main_lay);
 
         //on instancie la liste
         todoList = (ListView)findViewById(R.id.listView);
@@ -111,7 +117,11 @@ public class MainActivity extends AppCompatActivity {
                             edtLay.setErrorEnabled(false);
                             bdd.getWritableDatabase().execSQL("INSERT INTO " + bdd.TABLE_NAME +
                                     " (" + bdd.KEY_DESC + ") VALUES ('" + edt.getText() + "');");
-                            Toast.makeText(MainActivity.this,getString(R.string.add_success),Toast.LENGTH_LONG).show();
+
+                            //Toast.makeText(MainActivity.this,getString(R.string.add_success),Toast.LENGTH_LONG).show();
+
+                            Snackbar snackbar = Snackbar.make(mainLay,getString(R.string.add_success),Snackbar.LENGTH_SHORT);
+                            snackbar.show();
                         }
                     }
                 });
@@ -133,6 +143,10 @@ public class MainActivity extends AppCompatActivity {
 
         //les tâche ne sont pas triées de base
         tri = false;
+
+        //on affiche les crédits
+        Snackbar snackbar = Snackbar.make(mainLay,getString(R.string.credits),Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @Override
@@ -237,13 +251,72 @@ public class MainActivity extends AppCompatActivity {
         bdd.getWritableDatabase().execSQL("DELETE FROM ToDo WHERE id=" + id);
         //et on met à jour
         refreshList();
+        //on confirme
+        Snackbar snackbar = Snackbar.make(mainLay,getString(R.string.delete_success),Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
+    /**
+     * Cette méthode sert à modifier un item en particulier
+     * dans la liste
+     * @param id int
+     */
+    private void editItem(final int id){
+        //on instancie le constructeur de boîtes de dialogue
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        //on récupère l'inflater de layout da l'activité courante
+        LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+        //on inflate le layout personnalisé
+        final View dialogView = inflater.inflate(R.layout.edit_dialog, null);
+        //on l'utilise pour personnaliser la boîte de dialogue
+        dialogBuilder.setView(dialogView);
+
+        //on instancie les elements de la boîte de dialogue
+        final EditText edt = (EditText) dialogView.findViewById(R.id.task);
+        final TextInputLayout edtLay = (TextInputLayout)dialogView.findViewById(R.id.editor_lay);
+
+        //on choisit un titre
+        dialogBuilder.setTitle(getString(R.string.edit_item) + " " + id);
+
+        //un bouton de réponse positive
+        dialogBuilder.setNeutralButton(R.string.edit, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if(edt.getText().toString().equals("")){
+                    edtLay.setError(getString(R.string.entry_error));
+                    edtLay.setErrorEnabled(true);
+                }else{
+                    edtLay.setErrorEnabled(false);
+                    bdd.getWritableDatabase().execSQL("UPDATE ToDo SET desc = '" + edt.getText()
+                    + "' WHERE id=" + id);
+
+                    //Toast.makeText(MainActivity.this,getString(R.string.edit_success),Toast.LENGTH_LONG).show();
+
+                    Snackbar snackbar = Snackbar.make(mainLay,getString(R.string.edit_success),Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    refreshList();
+                }
+            }
+        });
+
+        //un bouton de réponse négative
+        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //on ne fait rien, juste dismiss le dialogue
+            }
+        });
+
+        //on crée la boite de dialogue
+        AlertDialog b = dialogBuilder.create();
+
+        //on l'affiche
+        b.show();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId()==R.id.listView) {
             AdapterView.AdapterContextMenuInfo options = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(getString(R.string.delete_task) + (((AdapterView.AdapterContextMenuInfo) menuInfo).id + 1) + " ?");
+            menu.setHeaderTitle(getString(R.string.delete_task) + (((AdapterView.AdapterContextMenuInfo) menuInfo).id + 1) + ":");
             String[] menuItems = getResources().getStringArray(R.array.menu);
             for (int i = 0; i<menuItems.length; i++) {
                 menu.add(Menu.NONE, i, i, menuItems[i]);
@@ -263,6 +336,11 @@ public class MainActivity extends AppCompatActivity {
         if(menuItemIndex == 0){
             //si on choisi l'option supprimer
             deleteItem(options.position + 1);
+        }
+
+        if(menuItemIndex == 1){
+            //si on choisit l'option modifier
+            editItem(options.position + 1);
         }
 
         bdd.getWritableDatabase().execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='ToDo';");
