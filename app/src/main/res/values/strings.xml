@@ -4,7 +4,7 @@
   -->
 
 <resources>
-    <string name="app_name">Todo List</string>
+    <string name="app_name">Gestion de ToDo Liste</string>
     <string name="credits">Par Cyprien Aubry &amp; Sofiane Gerhardt - AI1</string>
 
     <string name="debugger">Debugger</string>
@@ -14,6 +14,7 @@
 
     <string name="task_desc">Description de la tâche</string>
     <string name="add">Ajouter</string>
+    <string name="more_options">Donner une deadline</string>
     <string name="add_success">Tâche ajoutée</string>
 
     <string name="db_count">Nombre d\'élements :</string>
@@ -31,4 +32,6 @@
     <string name="edit_item">Modifier la tâche N°</string>
     <string name="edit">Modifier</string>
     <string name="edit_success">Tâche modifiée !</string>
+
+    <string name="view_item">Tâche N°</string>
 </resources>

@@ -27,8 +27,10 @@ public class BDD extends SQLiteOpenHelper {
     public final static String TABLE_NAME = "ToDo";
     public final static String KEY_ID = "id";
     public final static String KEY_DESC = "desc";
+    public final static String KEY_DATE = "date";
     private final static String CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-            " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DESC + " TEXT);";
+            " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DESC + " TEXT, " + KEY_DATE +
+            " DATE);";
 
     /**
      * Constructeur

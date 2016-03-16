@@ -4,7 +4,7 @@
   ~ Tous Droits Reservés
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,4 +23,22 @@
             android:hint="@string/task_desc"/>
     </android.support.design.widget.TextInputLayout>
 
-</LinearLayout>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/more_options"
+        android:layout_below="@+id/adder_lay"
+        android:layout_alignParentStart="true"
+        android:id="@+id/more" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:id="@+id/date_selector"
+        android:visibility="invisible"
+        android:layout_below="@+id/more"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
