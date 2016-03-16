@@ -13,4 +13,10 @@ liste prédéfini dans les specs Android.
 > Question F2 : On l'affiche sur le FAB, c'est plus beau.
 uen autre question.
 > Question F3 :
->Question F4 : Option de modification ajoutée par le biais d'une boîte de dialogue.
+> Question F4 : Option de modification ajoutée par le biais d'une boîte de dialogue.
+> Question F5 : C'est plutôt buèn.
+
+>> Advice <<
+
+Pour rafraîchir la liste c'est un SwipeRefreshLayout qui s'occupe de ça du coup il faut swiper.
+En cliquant sur un item, on peut voir les détails concernant la tâche.
