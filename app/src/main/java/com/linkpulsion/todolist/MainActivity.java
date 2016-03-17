@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,6 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final MediaPlayer troll = MediaPlayer.create(this,R.raw.troll);
 
         //on crée une instance de la BDD
         bdd = new BDD(this);
@@ -207,8 +211,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        todoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
+
         //on affiche les crédits
-        Snackbar snackbar = Snackbar.make(mainLay, getString(R.string.credits), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mainLay, getString(R.string.credits), Snackbar.LENGTH_LONG)
+                .setAction(R.string.action, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try{
+                            if(troll.isPlaying() || troll.isLooping()){
+                                troll.pause();
+                                troll.seekTo(0);
+                                troll.prepare();
+                            }else{
+                                troll.start();
+                            }
+                        }catch(IOException e){
+                            Log.e("EXCEPTION", "Error while playing sound");
+                        } catch (IllegalStateException e) {
+                            Log.e("EXCEPTION", "Error while playing sound");
+                        }
+                    }
+                });
         snackbar.show();
     }
 
@@ -456,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
 
         bdd.getWritableDatabase().execSQL("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='ToDo';");
 
-        Log.d("CONTEXTMENU", "Opetion selectionnée : " + menuItemName + " pour l'item " + listItemName);
+        Log.d("CONTEXTMENU", "Option selectionnée : " + menuItemName + " pour l'item " + listItemName);
         return true;
     }
 }
